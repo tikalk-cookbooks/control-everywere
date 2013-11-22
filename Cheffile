@@ -11,3 +11,6 @@ cookbook 'nodejs'
 cookbook 'mongodb'
 cookbook 'git'
 cookbook 'nginx'
+cookbook 'magic_shell'
+cookbook 'nginx'
+

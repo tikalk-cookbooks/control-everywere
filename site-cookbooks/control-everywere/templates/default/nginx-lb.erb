@@ -1,0 +1,22 @@
+# the IP(s) on which your node server is running. I chose port 3000.
+upstream app_yourdomain {
+    server <%= node[:ce][:web][:ip] %>:<%= node[:ce][:nodejs][:port] %>;
+}
+
+# the nginx server instance
+server {
+  listen 0.0.0.0:80;
+  server_name <%= node[:ip] %> <%= node[:ce][:project_name] %>;
+  access_log /var/log/nginx/<%= node[:ce][:project_name] %>.log;
+
+  # pass the request to the node.js server with the correct headers and much more can be added, see nginx config options
+  location / {
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-NginX-Proxy true;
+
+    proxy_pass http://<%= node[:ce][:web][:ip] %>/;
+    proxy_redirect off;
+  }
+}

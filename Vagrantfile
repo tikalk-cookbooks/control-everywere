@@ -15,6 +15,7 @@ Vagrant.configure("2") do |config|
   # Define the web server - nodejs ...
   config.vm.define "web" do |web|
     web.vm.hostname = "web"
+    web.vm.network "private_network", ip: "192.168.56.101"
     web.vm.provision :chef_solo do |chef|
       # chef.https_proxy    = ""
       # chef.no_proxy       = "127.0.0.1,localhost"
@@ -33,7 +34,8 @@ Vagrant.configure("2") do |config|
   # Define the DB server - mongodb ... 
   config.vm.define "db" do |db|
     db.vm.hostname = "db"
-    db.vm.network "public_network", :bridge => 'vnet0'
+    # db.vm.network "public_network", :bridge => 'vnet0'
+    db.vm.network "private_network", ip: "192.168.56.102"
     db.vm.provision :chef_solo do |chef|
       # chef.https_proxy    = ""
       # chef.no_proxy       = "127.0.0.1,localhost"
@@ -51,7 +53,8 @@ Vagrant.configure("2") do |config|
   # Define the LB server -  naginx  ... 
   config.vm.define "lb" do |lb|
     lb.vm.hostname = "lb"
-    lb.vm.network "public_network", :bridge => 'vnet0'
+    # lb.vm.network "public_network", :bridge => 'vnet0'
+    lb.vm.network "private_network", ip: "192.168.56.103"
     lb.vm.provision :chef_solo do |chef|
       # chef.https_proxy    = ""
       # chef.no_proxy       = "127.0.0.1,localhost"

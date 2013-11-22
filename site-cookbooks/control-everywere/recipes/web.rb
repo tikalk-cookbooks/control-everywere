@@ -19,4 +19,27 @@
 
 
 # set system variables
+magic_shell_environment 'MONGO_DB_CS' do
+  value node[:ce][:db][:ip]
+end
+
+git node[:ce][:runtime_dir] do
+  repository node[:ce][:repo]
+  reference node[:ce][:ref]
+  action :sync
+end
+
+include_recipe "nodejs::npm"
+
+npm_package do
+  path "#{node[:ce][:runtime_dir]}/packadge.json"
+  action :install_from_json
+end
+
+npm_package "bower" do
+  version node[:ce][:bower_version]
+  action :uninstall
+end
+
+
 
