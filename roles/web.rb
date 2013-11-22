@@ -1,4 +1,5 @@
 name "web"
-description "web server [amongst other things, is up to you to decide ...]"
+
+description "nodejs web server "
 run_list "recipe[nodejs::default]", "recipe[git::default]", "recipe[control-everywere::web]"
 

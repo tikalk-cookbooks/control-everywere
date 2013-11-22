@@ -1,4 +1,4 @@
 name "lb"
-description "Load balancing server [amongst other things, is up to you to decide ...]"
+description "Load balancing server"
 run_list "recipe[nginx::default]"
 
