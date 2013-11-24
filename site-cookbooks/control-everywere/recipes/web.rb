@@ -23,23 +23,37 @@ magic_shell_environment 'MONGO_DB_CS' do
   value node[:ce][:db][:ip]
 end
 
+directory node[:ce][:runtime_dir] do
+  owner "vagrant"
+  group "vagrant"
+  mode 00755
+  action :create
+end
+
 git node[:ce][:runtime_dir] do
-  repository node[:ce][:repo]
+  repository node[:ce][:repo_url]
   reference node[:ce][:ref]
+  user	"vagrant"
   action :sync
 end
 
-include_recipe "nodejs::npm"
-
-npm_package do
-  path "#{node[:ce][:runtime_dir]}/packadge.json"
-  action :install_from_json
+bash "npm_install" do
+	code	"export HOME=${node[:ce][:home_dir]} \
+                 npm install"
+	cwd	node[:ce][:runtime_dir] 
+	action	:run
+	user	"vagrant"
 end
 
-npm_package "bower" do
-  version node[:ce][:bower_version]
-  action :uninstall
+bash "install_bower" do
+	code	"npm install -g bower"
+	action	:run
 end
 
-
-
+bash "bower_install" do
+	code	"export HOME=${node[:ce][:home_dir]} \
+                 npm install"
+	cwd	node[:ce][:runtime_dir]
+	action	:run
+	user	"vagrant"
+end
