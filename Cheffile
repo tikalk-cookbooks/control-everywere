@@ -12,5 +12,7 @@ cookbook 'mongodb'
 cookbook 'git'
 cookbook 'nginx'
 cookbook 'magic_shell'
-cookbook 'nginx'
+cookbook 'npm'
+# provide some npm operation:
+#cookbook 'chef-npm', :git => 'https://github.com/balbeko/chef-npm.git'
 

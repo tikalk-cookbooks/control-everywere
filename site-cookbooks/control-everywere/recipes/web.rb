@@ -37,22 +37,32 @@ git node[:ce][:runtime_dir] do
   action :sync
 end
 
-bash "npm_install" do
-	code	"export HOME=${node[:ce][:home_dir]} \
-                 npm install"
-	cwd	node[:ce][:runtime_dir] 
-	action	:run
-	user	"vagrant"
+#bash "npm_install" do
+	#code	"export HOME=${node[:ce][:home_dir]} \
+                 #npm install"
+	#cwd	node[:ce][:runtime_dir] 
+	#action	:run
+	#user	"vagrant"
+#end
+#
+npm_package "install" do
+  path 	 node[:ce][:runtime_dir]
+  action :install_from_json
 end
 
-bash "install_bower" do
-	code	"npm install -g bower"
-	action	:run
-end
+#bash "install_bower" do
+	#code	"npm install -g bower"
+	#action	:run
+#end
+
+npm_package "bower" do
+  version node[:ce][:bower_version]
+  action :install
+end 
 
 bash "bower_install" do
-	code	"export HOME=${node[:ce][:home_dir]} \
-                 npm install"
+	code	"bower install"
+	environment	"HOME" => node[:ce][:home_dir]
 	cwd	node[:ce][:runtime_dir]
 	action	:run
 	user	"vagrant"

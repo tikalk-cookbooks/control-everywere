@@ -28,6 +28,8 @@ SITE
       apt (>= 0.0.0)
       build-essential (>= 0.0.0)
       yum (>= 0.0.0)
+    npm (0.1.2)
+      nodejs (>= 0.0.0)
     ohai (1.1.12)
     rsyslog (1.9.0)
     runit (1.4.0)
@@ -42,6 +44,6 @@ DEPENDENCIES
   magic_shell (>= 0)
   mongodb (>= 0)
   nginx (>= 0)
-  nginx (>= 0)
   nodejs (>= 0)
+  npm (>= 0)
 
