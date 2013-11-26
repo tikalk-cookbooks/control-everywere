@@ -1,14 +1,14 @@
 # the IP(s) on which your node server is running. I chose port 3000.
-upstream youtube_remote {
+upstream <%= node[:ce][:project_name] %> {
     server <%= node[:ce][:web][:ip] %>:<%= node[:ce][:nodejs][:port] %>;
 }
 
 # the nginx server instance
 server {
     listen 81;
-    server_name <%= node[:ip] %>/<%= node[:ce][:project_name] %>;
+    server_name <%= node[:ce][:lb][:ip] %>/<%= node[:ce][:project_name] %>;
     access_log /var/log/nginx/<%= node[:ce][:project_name] %>.log;
 
-    proxy_pass http://<%= node[:ce][:web][:ip] %>/;
+    proxy_pass http://<%= node[:ce][:project_name] %>/;
   }
 }

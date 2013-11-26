@@ -24,8 +24,8 @@ magic_shell_environment 'MONGO_DB_CS' do
 end
 
 directory node[:ce][:runtime_dir] do
-  owner "vagrant"
-  group "vagrant"
+  owner node[:ce][:user]
+  group node[:ce][:user]
   mode 00755
   action :create
 end
@@ -33,7 +33,7 @@ end
 git node[:ce][:runtime_dir] do
   repository node[:ce][:repo_url]
   reference node[:ce][:ref]
-  user	"vagrant"
+  user	node[:ce][:user]
   action :sync
 end
 
@@ -52,5 +52,5 @@ bash "bower_install" do
     environment	"HOME" => node[:ce][:home_dir]
 	cwd	node[:ce][:runtime_dir]
 	action	:run
-	user	"vagrant"
+	user	node[:ce][:user]
 end
