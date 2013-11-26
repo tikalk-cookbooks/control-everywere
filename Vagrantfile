@@ -18,11 +18,15 @@ Vagrant.configure("2") do |config|
   #
   #   # Use VBoxManage to customize the VM. For example to change memory:
   #   vb.customize ["modifyvm", :id, "--memory", "1024"]
- 
+
+	web_ip = "192.168.56.101" 
+	db_ip = "192.168.56.102" 
+	lb_ip = "192.168.56.103" 
+
   # Define the web server - nodejs ...
   config.vm.define "web" do |web|
     web.vm.hostname = "web"
-    web.vm.network "private_network", ip: "192.168.56.101"
+    web.vm.network "private_network", ip: web_ip
     web.vm.provision :chef_solo do |chef|
       # chef.https_proxy    = ""
       # chef.no_proxy       = "127.0.0.1,localhost"
@@ -30,8 +34,9 @@ Vagrant.configure("2") do |config|
       chef.roles_path     = ["roles"]
       chef.log_level      = ENV['CHEF_LOG'] ? ENV['CHEF_LOG'].to_sym : :debug    
       chef.add_role "web"
-
+      
       chef.json = {
+	:ce => {"db" => {"ip" => db_ip}}
 
       }
     end 
@@ -71,9 +76,22 @@ Vagrant.configure("2") do |config|
       chef.add_role "lb"
 
       chef.json = {
+	:ce => {"web" => {"ip" => web_ip}}
 
       }
     end 
   end 
+
+   config.vm.provider :aws do |aws, override|
+    aws.access_key_id = "MIO_ACCESS_KEY_ID"
+    aws.secret_access_key = "MIO_SECRET_ACCESS_KEY"
+    aws.keypair_name = "mio"
+
+    aws.ami = " ami-a73264ce"
+     aws.security_groups = [ "ce" ]
+
+    override.ssh.username = "root"
+    override.ssh.private_key_path = "mio.pem"
+  end
 
 end

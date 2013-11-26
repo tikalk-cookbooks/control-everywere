@@ -4,15 +4,15 @@
 site 'http://community.opscode.com/api/v1'
 # add any opscode dependencey you may have by adding a line like the following:
 # cookbooks 'cookbook_name'
+
 ## and optionally 
 # cookbooks 'cookbook_name', 'cookbook-version' # e.g '1.0.0'
 #cookbook 'java', :git => 'git@github.com:opscode-cookbooks/java.git', :ref => 'master'
+
 cookbook 'nodejs'
 cookbook 'mongodb'
 cookbook 'git'
 cookbook 'nginx'
 cookbook 'magic_shell'
 cookbook 'npm'
-# provide some npm operation:
-#cookbook 'chef-npm', :git => 'https://github.com/balbeko/chef-npm.git'
 
