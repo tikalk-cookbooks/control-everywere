@@ -23,10 +23,18 @@ Vagrant.configure("2") do |config|
 	db_ip = "192.168.56.102" 
 	lb_ip = "192.168.56.103" 
 
+	$provision_script= <<SCRIPT
+if [[ $(which chef-solo) != '/usr/bin/chef-solo' ]]; then
+curl -L https://www.opscode.com/chef/install.sh | sudo bash
+echo 'export PATH="/opt/chef/embedded/bin:$PATH"' >> ~/.bash_profile && source ~/.bash_profile
+fi
+SCRIPT
+
   # Define the web server - nodejs ...
   config.vm.define "web" do |web|
     web.vm.hostname = "web"
     web.vm.network "private_network", ip: web_ip
+    web.vm.provision :shell, :inline => $provision_script
     web.vm.provision :chef_solo do |chef|
       # chef.https_proxy    = ""
       # chef.no_proxy       = "127.0.0.1,localhost"
@@ -34,7 +42,6 @@ Vagrant.configure("2") do |config|
       chef.roles_path     = ["roles"]
       chef.log_level      = ENV['CHEF_LOG'] ? ENV['CHEF_LOG'].to_sym : :debug    
       chef.add_role "web"
-      
       chef.json = {
 	:ce => {"db" => {"ip" => db_ip}}
 
@@ -82,16 +89,25 @@ Vagrant.configure("2") do |config|
     end 
   end 
 
+  
+
    config.vm.provider :aws do |aws, override|
-    aws.access_key_id = "MIO_ACCESS_KEY_ID"
-    aws.secret_access_key = "MIO_SECRET_ACCESS_KEY"
+	   prove = "aws"
+    override.vm.box = "dummy"
+    override.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
+  #  aws.access_key_id = "MIO_ACCESS_KEY_ID"
+  #  aws.secret_access_key = "MIO_SECRET_ACCESS_KEY"
+    aws.access_key_id = "AKIAI7VAUZNIQKUEJM3A"
+    aws.secret_access_key = "MLxSzp+I439L9ukbdHKvdZTVZcHn5ZDXG9AmKT5O"
     aws.keypair_name = "mio"
 
-    aws.ami = " ami-a73264ce"
-     aws.security_groups = [ "ce" ]
+    aws.ami = "ami-a73264ce"
+    aws.security_groups = [ "ce" ]
 
-    override.ssh.username = "root"
+    override.ssh.username = "ubuntu"
     override.ssh.private_key_path = "mio.pem"
+
+    end 
+
   end
 
-end

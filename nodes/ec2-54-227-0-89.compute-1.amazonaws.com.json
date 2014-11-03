@@ -1,0 +1,11 @@
+{
+	"run_list":[
+		"role[web]",
+		"role[db]"
+		],
+	"ce": {"home_dir":  "/home/ubuntu",
+		"user":  "ubuntu"
+		}
+}
+
+
