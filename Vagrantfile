@@ -97,15 +97,15 @@ SCRIPT
     override.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
   #  aws.access_key_id = "MIO_ACCESS_KEY_ID"
   #  aws.secret_access_key = "MIO_SECRET_ACCESS_KEY"
-    aws.access_key_id = "AKIAI7VAUZNIQKUEJM3A"
-    aws.secret_access_key = "MLxSzp+I439L9ukbdHKvdZTVZcHn5ZDXG9AmKT5O"
-    aws.keypair_name = "mio"
+    aws.access_key_id = ENV['AWS_ACCESS_KEY']
+    aws.secret_access_key = ENV['AWS_SECRET_KEY']
+    aws.keypair_name = ENV['KEYPAIR_NAME']
 
     aws.ami = "ami-a73264ce"
     aws.security_groups = [ "ce" ]
 
     override.ssh.username = "ubuntu"
-    override.ssh.private_key_path = "mio.pem"
+    override.ssh.private_key_path = "#{ENV['KEYPAIR_NAME']}.pem"
 
     end 
 
