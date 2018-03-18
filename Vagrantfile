@@ -5,8 +5,8 @@
 
 Vagrant.configure("2") do |config|
   
- config.vm.box = "ubuntu-12.04-omnibus-chef"
- config.vm.box_url = "http://grahamc.com/vagrant/ubuntu-12.04-omnibus-chef.box"
+ config.vm.box = "h4ppyy/ubuntu-17.10"
+ #config.vm.box_url = "https://app.vagrantup.com/ffuenf/boxes/ubuntu-17.10.1-server-amd64"
  
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -34,7 +34,6 @@ SCRIPT
   config.vm.define "web" do |web|
     web.vm.hostname = "web"
     web.vm.network "private_network", ip: web_ip
-    web.vm.provision :shell, :inline => $provision_script
     web.vm.provision :chef_solo do |chef|
       # chef.https_proxy    = ""
       # chef.no_proxy       = "127.0.0.1,localhost"
@@ -60,7 +59,7 @@ SCRIPT
       # chef.no_proxy       = "127.0.0.1,localhost"
       chef.cookbooks_path = ["cookbooks", "site-cookbooks"]
       chef.roles_path     = ["roles"]
-      chef.log_level      = ENV['CHEF_LOG'] ? ENV['CHEF_LOG'].to_sym : :debug    
+      chef.log_level      = ENV['CHEF_LOG'] ? ENV['CHEF_LOG'].to_sym : :info    
       chef.add_role "db"
 
       chef.json = {
